@@ -1,4 +1,4 @@
-# Scenario 09 — Checkers
+# Scenario 21 — Checkers
 
 A modular terminal checkers game with a board, movement rules, captures, and promotion support.
 
