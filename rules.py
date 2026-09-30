@@ -21,7 +21,7 @@ def capture_move(board, player, start, end):
         board[er][ec] == "." and
         abs(er - sr) == 2 and abs(ec - sc) == 2 and
         er - sr == 2 * direction and
-        board[mr][mc] not in (".", player)
+        board[mr][mc] not in (".", player, player + "K")    
     )
 
 
