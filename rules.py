@@ -1,26 +1,25 @@
 SIZE = 8
 
-
 def simple_move(board, player, start, end):
     sr, sc = start
     er, ec = end
-    direction = -1 if player == "R" else 1
+    directions = (-1, 1) if board[sr][sc].endswith("K") else ((-1,) if player == "R" else (1,))
     return (
         board[er][ec] == "." and
         abs(er - sr) == 1 and abs(ec - sc) == 1 and
-        er - sr == direction
+        er - sr in directions    
     )
 
 
 def capture_move(board, player, start, end):
     sr, sc = start
     er, ec = end
-    direction = -1 if player == "R" else 1
+    directions = (-1, 1) if board[sr][sc].endswith("K") else ((-1,) if player == "R" else (1,))    
     mr, mc = (sr + er) // 2, (sc + ec) // 2
     return (
         board[er][ec] == "." and
         abs(er - sr) == 2 and abs(ec - sc) == 2 and
-        er - sr == 2 * direction and
+        (er - sr) // 2 in directions and
         board[mr][mc] not in (".", player, player + "K")    
     )
 
