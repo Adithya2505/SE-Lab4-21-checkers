@@ -1,6 +1,5 @@
 from board import initial_board, move_piece, SIZE
-from rules import simple_move, capture_move, promote
-
+from rules import simple_move, capture_move, promote, has_legal_move
 
 class Checkers:
     def __init__(self):
@@ -16,6 +15,10 @@ class Checkers:
         print("Checkers — move: sr sc er ec")
         while True:
             self.print_board()
+            if not has_legal_move(self.board, self.player):
+                winner = "B" if self.player == "R" else "R"
+                print(f"{self.player} has no pieces or no legal moves. {winner} wins!")
+                return
             raw = input(f"{self.player}> ").strip().lower().split()
             if raw == ["q"]:
                 return

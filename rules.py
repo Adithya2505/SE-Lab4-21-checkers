@@ -31,3 +31,16 @@ def promote(board):
             board[0][c] = "RK"
         if board[SIZE - 1][c] == "B":
             board[SIZE - 1][c] = "BK"
+
+def has_legal_move(board, player):
+    for r in range(SIZE):
+        for c in range(SIZE):
+            if board[r][c] in (player, player + "K"):
+                for dr in (-2, -1, 1, 2):
+                    for dc in (-2, -1, 1, 2):
+                        er, ec = r + dr, c + dc
+                        if 0 <= er < SIZE and 0 <= ec < SIZE:
+                            if simple_move(board, player, (r, c), (er, ec)) or \
+                               capture_move(board, player, (r, c), (er, ec)):
+                                return True
+    return False
