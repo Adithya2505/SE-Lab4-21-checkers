@@ -43,3 +43,15 @@ def has_legal_move(board, player):
                                capture_move(board, player, (r, c), (er, ec)):
                                 return True
     return False
+
+def has_capture(board, player, only=None):
+    for r in range(SIZE):
+        for c in range(SIZE):
+            if (only is None or only == (r, c)) and board[r][c] in (player, player + "K"):
+                for dr in (-2, 2):
+                    for dc in (-2, 2):
+                        er, ec = r + dr, c + dc
+                        if 0 <= er < SIZE and 0 <= ec < SIZE and \
+                           capture_move(board, player, (r, c), (er, ec)):
+                            return True
+    return False

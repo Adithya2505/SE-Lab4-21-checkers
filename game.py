@@ -1,10 +1,11 @@
 from board import initial_board, move_piece, SIZE
-from rules import simple_move, capture_move, promote, has_legal_move
+from rules import simple_move, capture_move, promote, has_legal_move, has_capture
 
 class Checkers:
     def __init__(self):
         self.board = initial_board()
         self.player = "R"
+        self.chain = None
 
     def print_board(self):
         print("\n   " + " ".join(str(c) for c in range(SIZE)))
@@ -38,13 +39,26 @@ class Checkers:
                 continue
 
             start, end = (sr, sc), (er, ec)
+            if self.chain and start != self.chain:
+                print("You must keep jumping with the same piece.")
+                continue
+            was_man = not self.board[sr][sc].endswith("K")
             if capture_move(self.board, self.player, start, end):
-                move_piece(self.board, start, end)
+                jumped = True
             elif simple_move(self.board, self.player, start, end):
-                move_piece(self.board, start, end)
+                if has_capture(self.board, self.player):
+                    print("You must capture.")
+                    continue
+                jumped = False
             else:
                 print("Invalid move.")
                 continue
 
+            move_piece(self.board, start, end)
             promote(self.board)
+            crowned = was_man and self.board[er][ec].endswith("K")
+            if jumped and not crowned and has_capture(self.board, self.player, end):
+                self.chain = end
+                continue
+            self.chain = None
             self.player = "B" if self.player == "R" else "R"
