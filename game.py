@@ -20,8 +20,13 @@ class Checkers:
                 winner = "B" if self.player == "R" else "R"
                 print(f"{self.player} has no pieces or no legal moves. {winner} wins!")
                 return
-            raw = input(f"{self.player}> ").strip().lower().split()
+            try:
+                raw = input(f"{self.player}> ").strip().lower().split()
+            except (EOFError, KeyboardInterrupt):
+                print("\nGoodbye.")
+                return
             if raw == ["q"]:
+                print("\nGoodbye.")
                 return
             if len(raw) != 4:
                 print("Enter four coordinates.")
@@ -57,7 +62,12 @@ class Checkers:
             move_piece(self.board, start, end)
             promote(self.board)
             crowned = was_man and self.board[er][ec].endswith("K")
-            if jumped and not crowned and has_capture(self.board, self.player, end):
+            again = jumped and not crowned and has_capture(self.board, self.player, end)
+            msg = f"{self.player} {'captured' if jumped else 'moved'} {start} -> {end}"
+            if crowned:
+                msg += " and was crowned king"
+            print(msg + (". Jump again!" if again else "."))
+            if again:
                 self.chain = end
                 continue
             self.chain = None
